@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kado Spesial Untukmu</title>
+<style>
+:root{--bg:#fff1f2;--card:#ffffff;--ink:#4a2433;--muted:#9a6b7c;--accent:#e11d63;--soft:#fecdd3;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#21111a;--card:#34202c;--ink:#ffe4ec;--muted:#d49bb0;--accent:#ff5c93;--soft:#5a2f43;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#21111a;--card:#34202c;--ink:#ffe4ec;--muted:#d49bb0;--accent:#ff5c93;--soft:#5a2f43;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;overflow-y:auto;text-align:center}
+.screen.on{display:flex;animation:fade .6s ease}
+.screen>*{flex-shrink:0}
+.field{width:100%;max-width:420px;font-family:inherit;font-size:1rem;color:var(--ink);background:var(--card);border:1.5px solid var(--soft);border-radius:14px;padding:14px;margin-bottom:12px;resize:vertical;outline:none}
+.field:focus{border-color:var(--accent)}
+.vmodal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}.vmodal.on{display:flex}
+.vbox{position:relative;width:min(88vw,400px,calc(78vh * .75))}
+.vframe{aspect-ratio:3/4;width:100%;background:#000;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center;padding:0 16px;line-height:1.6}
+.vframe video{width:100%;height:100%;object-fit:contain;margin:0 -16px}
+.vclose{position:absolute;top:-14px;right:-8px;width:34px;height:34px;border-radius:50%;border:0;background:var(--accent);color:#fff;font-size:1.3rem;cursor:pointer;z-index:2}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+h1,h2{font-weight:normal;letter-spacing:.5px}
+h1{font-size:2rem;margin-bottom:6px}
+h2{font-size:1.6rem;margin-bottom:14px}
+.sub{color:var(--muted);font-style:italic;margin-bottom:22px}
+.btn{font-family:inherit;font-size:1rem;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:12px 26px;cursor:pointer;box-shadow:0 6px 18px rgba(225,29,99,.3);transition:transform .15s}
+.btn:active{transform:scale(.95)}
+.btn.ghost{background:transparent;color:var(--accent);box-shadow:none;border:1.5px solid var(--accent)}
+.back{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:14px;z-index:5;padding:8px 16px;font-size:.9rem}
+.music{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:14px;z-index:5;padding:8px 14px;font-size:.9rem}
+/* envelope */
+.env{position:relative;width:260px;height:170px;background:#f9a8b8;border-radius:6px;cursor:pointer;margin:20px 0 28px;box-shadow:0 14px 30px rgba(0,0,0,.18);animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.env .flap{position:absolute;top:0;left:0;width:100%;height:100%;background:#f58aa2;clip-path:polygon(0 0,100% 0,50% 58%);transform-origin:top;transition:transform .7s;z-index:3;border-radius:6px}
+.env .front{position:absolute;inset:0;background:#fbb9c7;clip-path:polygon(0 100%,0 0,50% 58%,100% 0,100% 100%);z-index:2;border-radius:6px}
+.env .paper{position:absolute;left:12%;top:8%;width:76%;height:80%;background:#fff;border-radius:4px;transition:transform .8s .5s;z-index:1}
+.env .seal{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-size:2rem;z-index:4;transition:opacity .3s}
+.env.open{animation:none}
+.env.open .flap{transform:rotateX(180deg);z-index:0}
+.env.open .paper{transform:translateY(-70px)}
+.env.open .seal{opacity:0}
+/* menu */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:380px}
+.tile{background:var(--card);border:1.5px solid var(--soft);border-radius:20px;padding:24px 10px;cursor:pointer;font-family:inherit;color:var(--ink);font-size:1.05rem;box-shadow:0 6px 16px rgba(225,29,99,.1);transition:transform .15s}
+.tile:active{transform:scale(.95)}
+.tile svg{width:34px;height:34px;margin-bottom:6px;stroke:var(--accent);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.heart svg{width:1em;height:1em;fill:currentColor;opacity:.5;display:block}
+.tile small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+/* journey */
+.timeline{width:100%;max-width:420px;text-align:left;border-left:2px dashed var(--accent);padding-left:18px;margin-top:10px}
+.stop{position:relative;margin-bottom:22px}
+.stop::before{content:"♥";position:absolute;left:-29px;top:0;color:var(--accent);background:var(--bg);font-size:.9rem}
+.stop .date{color:var(--accent);font-size:.8rem;letter-spacing:1px;text-transform:uppercase}
+.photo{width:100%;aspect-ratio:4/3;border-radius:12px;margin:6px 0;background:linear-gradient(135deg,var(--soft),var(--card));display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--muted);font-size:.85rem;cursor:pointer;overflow:hidden;border:6px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.12)}
+.photo span{font-size:2rem}
+.photo img{width:100%;height:100%;object-fit:cover}
+/* letter */
+.letter{background:var(--card);border-radius:14px;padding:26px 22px;max-width:420px;width:100%;text-align:left;line-height:1.75;box-shadow:0 8px 24px rgba(0,0,0,.1);min-height:260px;white-space:pre-wrap;margin-top:34px}
+/* playlist */
+.song{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:10px;max-width:420px;width:100%;text-align:left;text-decoration:none;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.disc{width:44px;height:44px;border-radius:50%;background:conic-gradient(var(--accent),var(--soft),var(--accent));display:flex;align-items:center;justify-content:center;flex:none;animation:spin 6s linear infinite}
+.disc::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--bg)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.song b{display:block;font-weight:normal}.song small{color:var(--muted)}
+/* gift */
+.gift{width:110px;height:110px;color:var(--accent);cursor:pointer;animation:beat 1.4s infinite;margin-bottom:10px}.gift svg{width:100%;height:100%;fill:currentColor}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.15)}50%{transform:scale(1)}65%{transform:scale(1.1)}}
+@keyframes shake{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(-10deg)}85%{transform:rotate(10deg)}}
+.reveal{display:none;background:var(--card);border:2px dashed var(--accent);border-radius:16px;padding:22px;max-width:380px;line-height:1.7}
+.reveal.on{display:block;animation:fade .6s}
+.heart{position:fixed;bottom:-30px;pointer-events:none;z-index:0;animation:rise linear forwards}
+@keyframes rise{to{transform:translateY(-110vh) rotate(30deg);opacity:0}}
+.screen{z-index:1}
+</style>
+</head>
+<body>
+
+<button class="btn ghost back" id="back" style="display:none">← Kembali</button>
+<button class="btn ghost music" id="music" style="display:none">♪ Musik: Off</button>
+
+<!-- COVER -->
+<section class="screen on" id="cover">
+  <p class="sub">Ada sesuatu spesial untukmu…</p>
+  <div class="env" id="env"><div class="paper"></div><div class="front"></div><div class="flap"></div><div class="seal"><svg viewBox="0 0 24 24" width="34" height="34" fill="#c2184f"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div></div>
+  <h1 id="coverTitle"></h1>
+  <p class="sub">Ketuk amplop untuk membuka</p>
+</section>
+
+<!-- MENU -->
+<section class="screen" id="menu">
+  <h2>Pilih Kejutanmu</h2>
+  <p class="sub" id="menuSub"></p>
+  <div class="grid">
+    <button class="tile" data-go="journey"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Journey<small>Perjalanan kita</small></button>
+    <button class="tile" data-go="moment"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Moment<small>Pesan untukmu</small></button>
+    <button class="tile" data-go="playlist"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5z"/></svg>Harapan<small>Untuk ke depan</small></button>
+    <button class="tile" data-go="gift"><svg viewBox="0 0 24 24"><path d="M12 12c-2-3-3.5-4-5.5-4a4 4 0 0 0 0 8c2 0 3.5-1 5.5-4zm0 0c2 3 3.5 4 5.5 4a4 4 0 0 0 0-8c-2 0-3.5 1-5.5 4z"/></svg>Selamanya<small>Kata terakhir</small></button>
+    <button class="tile" data-go="pesan" style="grid-column:1/3"><svg viewBox="0 0 24 24"><path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19z"/><path d="M14 7l3 3"/></svg>Tulis Pesan<small>Balas untukku</small></button>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section class="screen" id="journey" style="justify-content:flex-start;padding-top:64px">
+  <h2>Journey</h2>
+  <p class="sub">Perjalanan kita, dari awal sampai sekarang</p>
+  <div class="timeline" id="timeline"></div>
+  <div style="margin:6px 0 30px"><p class="sub" style="margin-bottom:12px">Ada satu video untukmu</p><button class="btn" id="vidBtn">Klik di sini</button></div>
+</section>
+
+<!-- MOMENT -->
+<section class="screen" id="moment" style="justify-content:flex-start;padding-top:50px">
+  <div class="letter" id="letter"></div>
+  <p class="sub" style="margin-top:16px" id="from"></p>
+  <button class="btn" id="momentPhotoBtn" style="margin-top:8px">Klik di sini</button>
+</section>
+
+<!-- PLAYLIST -->
+<section class="screen" id="playlist" style="justify-content:flex-start;padding-top:64px">
+  <h2>Harapan</h2>
+  <p class="sub">Doa-doa kecil untuk kita</p>
+  <div id="songs" style="width:100%;display:flex;flex-direction:column;align-items:center"></div>
+</section>
+
+<!-- GIFT -->
+<section class="screen" id="gift">
+  <h2>Selamanya</h2>
+  <div class="gift" id="giftBox"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+  <p class="sub" id="giftHint">Ketuk hatinya</p>
+  <div class="reveal" id="reveal"></div>
+</section>
+
+<section class="screen" id="pesan" style="justify-content:flex-start;padding-top:64px">
+  <h2>Tulis Pesan</h2>
+  <p class="sub">Tulis apa saja, pesanmu langsung dikirim lewat WhatsApp</p>
+  <textarea id="pText" class="field" rows="7" placeholder="Tulis pesanmu di sini…"></textarea>
+  <a class="btn" id="pSend" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Kirim ke WhatsApp</a>
+  <p class="sub" id="pStatus" style="margin-top:14px"></p>
+</section>
+
+<div id="vmodal" class="vmodal"><div class="vbox"><button class="vclose" id="vClose" aria-label="Tutup">×</button><div class="vframe" id="vFrame"></div></div></div>
+
+<script>
+/* ====== UBAH ISI DI SINI ====== */
+const CONFIG = {
+  musicSrc: "musik/lagu.mp3",
+  videoSrc: "video/kenangan.mp4",   
+  videoPoster: "foto/cover-video.jpg", // contoh: "foto/cover-video.jpg" (boleh kosong)
+  to: "Sayang",
+  from: "Desa Guwo, 2024 menyatukan ",
+  coverTitle: "Semangat ya cantikkkkk",
+  menuSub: "Empat pilihannmu",
+  journey: [
+    // foto diambil dari folder "foto": foto/1.jpg sampai foto/7.jpg (ganti nama atau ekstensinya di sini kalau berbeda)
+    {date:"Desember 2024", title:"Awal Bertemu", text:"KKN di Desa Guwo mempertemukan kita.", photo:"foto/1.jpg"},
+    {date:"Desember 2024", title:"Hari-Hari di Desa", text:"Menjalani hari bersama.", photo:"foto/2.jpg"},
+    {date:"Januari 2025", title:"KKN Berakhir", text:"Hari-hari bersama pun selesai.", photo:"foto/3.jpg"},
+    {date:"Februari 2025", title:"Lost Contact", text:"Komunikasi terputus, kita jalan masing-masing.", photo:"foto/4.jpg"},
+    {date:"Maret 2026", title:"Bertemu Kembali", text:"Takdir mempertemukan kita lagi.", photo:"foto/5.jpg"},
+    {date:"Setelah Itu", title:"Cerita Baru", text:"Kisah yang sempat terhenti dimulai lagi.", photo:"foto/6.jpg"},
+    {date:"Sekarang", title:"Semoga Abadi", text:"Kisah yang kita harap tidak berakhir.", photo:"foto/7.jpg"}
+  ],
+  letter: "Kisah ini berawal pada Desember 2024, ketika kita dipertemukan melalui program Kuliah Kerja Nyata (KKN) di Desa Guwo. Kita menjalani hari-hari bersama hingga seluruh rangkaian KKN berakhir pada Januari 2025.\n\nNamun, setelah KKN usai, sekitar satu bulan kemudian komunikasi kita mulai terputus. Kita pun menjalani kehidupan masing-masing hingga akhirnya lost contact.\n\nWaktu terus berjalan, sampai akhirnya pada Maret 2026, takdir kembali mempertemukan kita. Kisah yang sempat terhenti kini kembali dimulai, dengan cerita dan harapan yang baru.\n\nSemoga kali ini bukan sekadar pertemuan sementara. Semoga takdir yang kembali menyatukan kita ini menjadi kisah yang abadi.\n\nWe love you.",
+  wishes: [
+    "Semoga kali ini kita tidak lagi saling menghilang.",
+    "Semoga kita terus bertumbuh bersama, pelan-pelan tapi pasti.",
+    "Semoga setiap cerita baru menjadi kenangan yang indah.",
+    "Semoga takdir yang sama terus menjaga kita.",
+    "Semangat ya, wanita cantik dan hebat seperti kamu. Walaupun dunia sedang berisik, jangan sampai kehilangan senyummu. Tetaplah melangkah, tetap kuat, dan jangan lupa bahagia. Aku selalu berharap hal-hal baik datang menghampirimu.",
+    "We love you."
+  ],
+  giftText: "Dari Desa Guwo sampai hari ini,<br>takdir selalu menemukan jalan pulang.<br><br><b>We love you.</b>"
+};
+/* ================================ */
+
+const $ = s => document.querySelector(s);
+const screens = document.querySelectorAll('.screen');
+let history_ = [];
+function go(id, back){
+  screens.forEach(s => s.classList.toggle('on', s.id === id));
+  if(!back) history_.push(id);
+  $('#back').style.display = id==='cover'||id==='menu' ? 'none':'block';
+  $('#music').style.display = id==='cover' ? 'none':'block';
+  document.getElementById(id).scrollTop = 0;
+  if(id==='moment') typeLetter();
+}
+$('#back').onclick = () => go('menu', true);
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => go(b.dataset.go));
+
+$('#coverTitle').textContent = CONFIG.coverTitle;
+$('#menuSub').textContent = CONFIG.menuSub;
+$('#from').textContent = CONFIG.from;
+$('#reveal').innerHTML = CONFIG.giftText;
+
+/* envelope */
+$('#env').onclick = () => {
+  $('#env').classList.add('open');
+  startMusic();
+  setTimeout(() => go('menu'), 1700);
+};
+
+/* journey */
+$('#timeline').innerHTML = CONFIG.journey.map((j,i) => `
+  <div class="stop"><div class="date">${j.date}</div><b style="font-weight:normal;font-size:1.1rem">${j.title}</b>
+  <div class="photo" id="ph${i}"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="margin-bottom:6px"><path d="M12 5v14M5 12h14"/></svg>Foto ${i+1}</div>
+  <div style="color:var(--muted)">${j.text}</div></div>`).join('');
+CONFIG.journey.forEach((j,i) => {
+  if(!j.photo) return;
+  const box = $('#ph'+i), im = new Image();
+  im.alt = 'Foto ' + (i+1);
+  im.onload = () => { box.innerHTML = ''; box.appendChild(im); };
+  im.src = j.photo;
+});
+
+
+/* foto moment dalam popup */
+$('#momentPhotoBtn').onclick = () => {
+  $('#vFrame').innerHTML = '<img src="foto/8.jpg" alt="Foto Moment" style="width:100%;height:100%;object-fit:contain">';
+  resumeAfterVideo = playing;
+  if(playing) stopMusic();
+  $('#vmodal').classList.add('on');
+};
+
+/* letter */
+let typed = false, timer;
+function typeLetter(){
+  const el = $('#letter'), txt = CONFIG.letter.replace('{to}', CONFIG.to);
+  if(typed){ el.textContent = txt; return; }
+  typed = true; let i = 0; el.textContent = '';
+  timer = setInterval(() => { el.textContent = txt.slice(0, ++i); if(i >= txt.length) clearInterval(timer); }, 16);
+}
+
+/* playlist */
+$('#songs').innerHTML = CONFIG.wishes.map(w =>
+  `<div class="song"><div class="disc"></div><div><b>${w}</b></div></div>`).join('');
+
+/* gift */
+$('#giftBox').onclick = () => {
+  $('#giftBox').style.animationDuration = '.6s';
+  $('#giftHint').style.display = 'none';
+  $('#reveal').classList.add('on');
+  for(let i=0;i<30;i++) setTimeout(heart, i*80);
+};
+
+/* popup video 4:3 (tanpa layar penuh) */
+let resumeAfterVideo = false;
+$('#vidBtn').onclick = () => {
+  const f = $('#vFrame');
+  f.innerHTML = CONFIG.videoSrc
+    ? `<video src="${CONFIG.videoSrc}" controls playsinline controlsList="nofullscreen noremoteplayback" disablePictureInPicture ${CONFIG.videoPoster ? `poster="${CONFIG.videoPoster}"` : ''}></video>`
+    : 'Video belum diatur.<br>Isi videoSrc di bagian CONFIG.';
+  resumeAfterVideo = playing; if(playing) stopMusic();
+  $('#vmodal').classList.add('on');
+  const v = f.querySelector('video'); if(v) v.play().catch(() => {});
+};
+function closeV(){ $('#vmodal').classList.remove('on'); $('#vFrame').innerHTML = ''; if(resumeAfterVideo) startMusic(); }
+$('#vClose').onclick = closeV;
+$('#vmodal').onclick = e => { if(e.target.id === 'vmodal') closeV(); };
+
+/* pesan -> WhatsApp */
+const WA_NUMBER = "6285870536367";
+try{ $('#pText').value = localStorage.getItem('pesan_draft') || ''; }catch(e){}
+$('#pText').oninput = () => { try{ localStorage.setItem('pesan_draft', $('#pText').value); }catch(e){} };
+function waUrl(){ return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent($('#pText').value.trim()); }
+$('#pText').addEventListener('input', () => { $('#pSend').href = waUrl(); });
+$('#pSend').onclick = (e) => {
+  const t = $('#pText').value.trim(), st = $('#pStatus');
+  if(!t){ e.preventDefault(); st.textContent = 'Tulis pesannya dulu ya.'; return; }
+  try{
+    const old = JSON.parse(localStorage.getItem('pesan_terkirim') || '[]');
+    old.push({pesan:t, waktu:new Date().toISOString()});
+    localStorage.setItem('pesan_terkirim', JSON.stringify(old));
+    localStorage.removeItem('pesan_draft');
+  }catch(e){}
+  const url = waUrl(); $('#pSend').href = url;
+  st.innerHTML = 'Pesanmu tersimpan. Membuka WhatsApp…<br><a href="' + url + '" target="_blank" rel="noopener" style="color:var(--accent)">Ketuk di sini jika WhatsApp tidak terbuka</a>';
+  for(let i=0;i<14;i++) setTimeout(heart, i*80);
+};
+
+/* floating hearts */
+function heart(){
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+  h.style.left = Math.random()*100 + 'vw';
+  h.style.fontSize = (14 + Math.random()*20) + 'px';
+  h.style.color = 'var(--accent)';
+  h.style.animationDuration = (5 + Math.random()*5) + 's';
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 10000);
+}
+setInterval(heart, 1400);
+
+/* music box (WebAudio, tanpa file eksternal) */
+let ctx, playing = false, step = 0, loop;
+const notes = [523.25,659.25,783.99,659.25,587.33,698.46,880,698.46,523.25,659.25,783.99,1046.5,880,783.99,659.25,587.33];
+function tone(f){
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = 'sine'; o.frequency.value = f;
+  g.gain.setValueAtTime(.0001, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.12, ctx.currentTime + .02);
+  g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + 1.2);
+  o.connect(g).connect(ctx.destination); o.start(); o.stop(ctx.currentTime + 1.3);
+}
+let bgAudio = null;
+function startMusic(){
+  if(CONFIG.musicSrc){
+    bgAudio = bgAudio || Object.assign(new Audio(CONFIG.musicSrc), {loop:true});
+    bgAudio.play().catch(() => {});
+    playing = true; $('#music').textContent = '♪ Musik: On'; return;
+  }
+  try{
+    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+    if(ctx.state === 'suspended') ctx.resume();
+    playing = true; clearInterval(loop);
+    loop = setInterval(() => tone(notes[step++ % notes.length]), 420);
+    $('#music').textContent = '♪ Musik: On';
+  }catch(e){}
+}
+function stopMusic(){ playing = false; clearInterval(loop); if(bgAudio) bgAudio.pause(); $('#music').textContent = '♪ Musik: Off'; }
+$('#music').onclick = () => playing ? stopMusic() : startMusic();
+</script>
+</body>
+</html>
